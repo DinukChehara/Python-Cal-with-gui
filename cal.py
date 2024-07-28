@@ -4,8 +4,22 @@ import math
 
 app = customtkinter.CTk()
 app.title("Calculator")
-app.geometry("250x350")
+app.geometry("250x440")
 app.resizable(False, False)
+customtkinter.set_appearance_mode('dark')
+
+
+
+#tab view
+
+tabview = customtkinter.CTkTabview(master=app)
+tabview.pack(padx=2, pady=0)
+
+tabview.add("Cal")  # add tab at the end
+tabview.add("⚙")  # add tab at the end
+tabview.set("Cal")  # set currently visible tab
+
+
 
 #commands
 def Cal():
@@ -17,86 +31,125 @@ def Cal():
         box1.insert(0,result)
     except ZeroDivisionError:
         clear()
+        box1.insert(0,"Error! Cannot devide by 0")
     except:
         clear()
+        box1.insert(0,"Unknow Error!")
+
+    
         
 
 def clear():
+    cursor_position = box1.index(customtkinter.INSERT)
     box1.delete(0,"end")
 
 def button1_callback():
-    box1.insert('end', 1)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 1)
     
 def button2_callback():
-    box1.insert('end', 2)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 2)
 
 def button3_callback():
-    box1.insert('end', 3)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 3)
     
 def button4_callback():
-    box1.insert('end', 4)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 4)
     
 def button5_callback():
-    box1.insert('end', 5)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 5)
     
 def button6_callback():
-    box1.insert('end', 6)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 6)
     
 def button7_callback():
-    box1.insert('end', 7)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 7)
     
 def button8_callback():
-    box1.insert('end', 8)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 8)
     
 def button9_callback():
-    box1.insert('end', 9)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 9)
     
 def button0_callback():
-    box1.insert('end', 0)
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, 0)
     
 def buttondot_callback():
-    box1.insert('end', '.')
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, '.')
     
 def buttondevide_callback():
-    box1.insert('end', '/')
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, '/')
     
 def buttonmultiply_callback():
-    box1.insert('end', '*')
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, '*')
 
 def buttonadd_callback():
-    box1.insert('end', '+')
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, '+')
 
 def buttonsubtract_callback():
-    box1.insert('end', '-')
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position, '-')
     
 def buttonsquare_callback():
-    box1.insert('end','**2')
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position,'**2')
     
 def buttonnpower_callback():
-    box1.insert('end','**')
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position,'**')
     
 def buttonsqrt_callback():
-    box1.insert('end','math.sqrt()')
+    cursor_position = box1.index(customtkinter.INSERT)
+    box1.insert(cursor_position,'math.sqrt()')
 
 def buttondelete_callback():
-    eq=box1.get()
-    eq1=eq[:len(eq)-1]
-    clear()
-    box1.insert('end',eq1)
+    eq= box1.get()
+    cursor_position = box1.index(customtkinter.INSERT)
+    if cursor_position>0:
+        eq1 = eq[:cursor_position-1] + eq[cursor_position:]
 
+        box1.delete(0, customtkinter.END)
+        box1.insert(0, eq1)  
+        box1.icursor(cursor_position-1)
 
+def move_cursor_right():
+    current_pos = box1.index(customtkinter.INSERT)
+    new_pos=current_pos+1
+    box1.icursor(new_pos)
+
+def move_cursor_left():
+    current_pos = box1.index(customtkinter.INSERT)
+    new_pos=current_pos-1
+    box1.icursor(new_pos)
+
+def themesetdark():
+    customtkinter.set_appearance_mode('dark')
+ 
+def themesetlight():
+    customtkinter.set_appearance_mode('light')   
+    
 #text box
 
-box1 = customtkinter.CTkEntry(app, state='normal', width=200, height=35, font=('', 15))
+box1 = customtkinter.CTkEntry(master=tabview.tab("Cal"), state='normal', width=200, height=35, font=('', 15))
 box1.pack(side='top', pady=10)
 
-# scroll = customtkinter.CTkScrollbar(app, command=lambda *args: box1.xview(*args) ,orientation='horizontal')
-# scroll.pack(side='top', fill='x')
-# box1.configure(xscrollcommand=scroll.set)
 
 #frame1
 
-myframe = customtkinter.CTkFrame(app)
+myframe = customtkinter.CTkFrame(master=tabview.tab("Cal"))
 myframe.pack(pady=10)
 
 #buttons
@@ -131,7 +184,7 @@ buttondel.grid(row=5, column=0, padx=1, pady=1, columnspan=1)
 buttondot = customtkinter.CTkButton(myframe, text=".", command=buttondot_callback, font=('', 20), width=70)
 buttondot.grid(row=5, column=2, padx=1, pady=1, columnspan=1)
 
-comframe=customtkinter.CTkFrame(app)
+comframe=customtkinter.CTkFrame(master=tabview.tab("Cal"))
 comframe.pack(pady=10)
 
 buttonplus = customtkinter.CTkButton(comframe, text="+", command=buttonadd_callback, font=('', 20), width=70)
@@ -150,8 +203,25 @@ buttonsqrt = customtkinter.CTkButton(comframe, text='√', command=buttonsqrt_ca
 buttonsqrt.grid(row=2, column=1,pady=1, padx=1, columnspan=1)
 buttondelete = customtkinter.CTkButton(comframe, text='⌫', command=buttondelete_callback,font=('', 20), width=70)
 buttondelete.grid(row=0, column=2,pady=1, padx=1, columnspan=1)
-buttonans = customtkinter.CTkButton(comframe, text="=", command=Cal, font=('',20), width=70)
-buttonans.grid(row=2, column=2, padx=1, pady=1, columnspan=1,)
+buttonans = customtkinter.CTkButton(comframe, text="=", command=Cal, font=('',20), width=143)
+buttonans.grid(row=3, column=0, padx=1, pady=1, columnspan=2,)
+
+buttonleft = customtkinter.CTkButton(comframe, text="→", command=move_cursor_right, font=('',20), width=70)
+buttonleft.grid(row=3, column=2, padx=1, pady=1, columnspan=1,)
+buttonright = customtkinter.CTkButton(comframe, text="←", command=move_cursor_left, font=('',20), width=70)
+buttonright.grid(row=2, column=2, padx=1, pady=1, columnspan=1)
+
+
+def segmented_button_callback(value):
+    if value=="Dark":
+        themesetdark()
+    else:
+        themesetlight()
+
+segemented_button = customtkinter.CTkSegmentedButton(master=tabview.tab("⚙"), values=["Dark", "Light"],
+                                                     command=segmented_button_callback)
+segemented_button.set("Dark")
+segemented_button.pack(pady=1)
 
 
 app.mainloop()
